@@ -6,7 +6,7 @@ const promise = mongoose.connect('mongodb://127.0.0.1:27017/blog', {
   /* other options */
 });
 promise.then(function(db) {
-  console.log('connected')
+    console.log('connect to %s success', 'blog');
 }).catch(err => {
   if (err) {
     console.error('connect to %s error: ', 'blog', err.message);
@@ -14,5 +14,9 @@ promise.then(function(db) {
   }
 })
 
-import User from './user';
-export default {User};
+import UserModel from './userModel';
+import ArticleModel from './articleModel';
+export default {
+  UserModel,
+  ArticleModel
+};

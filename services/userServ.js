@@ -1,17 +1,17 @@
 // app/services/user.js
-import {User} from '../models/index';
+import {UserModel} from '../models/index';
 
 const getUsers = () => {
   return new Promise((resolve, reject) => {
-    User.find().exec().then((result) => {
+    UserModel.find().exec().then((result) => {
       resolve(result);
     });
   });
 };
 
-const addUser = (options) => {
+const add = (options) => {
   return new Promise((resolve, reject) => {
-    User.create(options).then((result) => {
+    UserModel.create(options).then((result) => {
       resolve(result);
     });
   });
@@ -19,5 +19,5 @@ const addUser = (options) => {
 
 export default {
   getUsers,
-  addUser
+  add
 }

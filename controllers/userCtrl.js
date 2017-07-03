@@ -1,5 +1,5 @@
 // app/controllers/user.js
-import User from '../services/user';
+import UserServ from '../services/userServ';
 
 // todo-app首页，渲染所有ToDo，并可以新建ToDo
 const users = async (ctx, next) => {
@@ -19,7 +19,7 @@ const addUser = async (ctx, next) => {
     email: 'qhdhiman@qq.com',
     head: 'aa.com'
   }
-  await User.addUser(user);
+  await UserServ.add(user);
   // ctx.redirect('/user');
   ctx.body = '添加成功'
 };
