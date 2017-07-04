@@ -1,5 +1,6 @@
 // app/controllers/user.js
 import UserServ from '../services/userServ';
+import Resp from '../utils/resp'
 
 // todo-app首页，渲染所有ToDo，并可以新建ToDo
 const users = async (ctx, next) => {
@@ -11,8 +12,7 @@ const users = async (ctx, next) => {
   });
 };
 
-// 通过表单的post新建一个ToDo，并返回列表页
-const addUser = async (ctx, next) => {
+const signup = async (ctx, next) => {
   const requestData = ctx.request.body;
   const user = {
     name: 'name',
@@ -23,8 +23,21 @@ const addUser = async (ctx, next) => {
   // ctx.redirect('/user');
   ctx.body = '添加成功'
 };
+const signin = async (ctx, next) => {
+  const requestData = ctx.request.body;
+  const user = {
+    name: 'name',
+    email: 'qhdhiman@qq.com',
+    head: 'aa.com'
+  }
+  await UserServ.signin(user);
+  // ctx.redirect('/user');
+  ctx.body = Resp({
+    data: { user: 'asdsfaads'}
+  })
+};
 
 export default {
-  addUser,
-  users
+  signup,
+  signin
 }

@@ -9,7 +9,14 @@ const getUsers = () => {
   });
 };
 
-const add = (options) => {
+const signin = (options) => {
+  return new Promise((resolve, reject) => {
+    UserModel.create(options).then((result) => {
+      resolve(result);
+    });
+  });
+};
+const signup = (options) => {
   return new Promise((resolve, reject) => {
     UserModel.create(options).then((result) => {
       resolve(result);
@@ -18,6 +25,6 @@ const add = (options) => {
 };
 
 export default {
-  getUsers,
-  add
+  signup,
+  signin
 }
