@@ -24,16 +24,15 @@ const signup = async (ctx, next) => {
   ctx.body = '添加成功'
 };
 const signin = async (ctx, next) => {
-  const requestData = ctx.request.body;
+  const query = ctx.request.body;
   const user = {
-    name: 'name',
-    email: 'qhdhiman@qq.com',
+    name: query.name,
+    phone: query.phone,
     head: 'aa.com'
   }
   await UserServ.signin(user);
-  // ctx.redirect('/user');
   ctx.body = Resp({
-    data: { user: 'asdsfaads'}
+    data: user
   })
 };
 

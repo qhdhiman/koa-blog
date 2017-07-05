@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 // 定义TodoSchema数据表和数据结构
 const UserSchema = new Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true},
+  phone: { type: String, required: true},
   head: { type: String, required: true, default: 'a.com' }
 });
 

@@ -3,7 +3,7 @@ var router = require('koa-router')({
 });
 
 const UserCtrl  = require('../controllers/userCtrl');
-router.get('/signup', UserCtrl.signup);
-router.get('/signin', UserCtrl.signin);
+router.post('/signup', UserCtrl.signup);
+router.post('/signin', UserCtrl.signin);
 
 module.exports = router;
