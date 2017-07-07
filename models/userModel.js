@@ -11,6 +11,6 @@ const UserSchema = new Schema({
 });
 
 // 使用content字段作为索引
-UserSchema.index({email: 1});
+UserSchema.index({phone: 1});
 // 使用Todo名称来调用表
 export default mongoose.model('User', UserSchema);
