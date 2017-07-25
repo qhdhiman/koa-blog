@@ -17,20 +17,21 @@ const users = async (ctx, next) => {
  * @returns {Promise.<void>}
  */
 const signup = async (ctx, next) => {
-  const requestData = ctx.request.body;
-  console.log('requestData', requestData)
-  const user = {
-    name: 'name',
-    email: 'qhdhiman@qq.com',
-    head: 'aa.com'
-  }
-  const exits = await UserServ.findByPhone(user.phone);
+  const request = ctx.request.body;
+  console.log('requestData', request)
+  const exits = await UserServ.findByPhone(request.phone);
   if (exits) {
     ctx.body = Resp({
       isOk: false,
       data: '手机号已存在'
     })
   } else {
+    const user = {
+      name: request.name,
+      phone: request.phone,
+      password: request.password,
+      head: '/static/avatar.jpg'
+    }
     const res = await UserServ.signup(user);
     ctx.body = Resp({
       data: res
@@ -45,15 +46,14 @@ const signup = async (ctx, next) => {
  * @returns {Promise.<void>}
  */
 const signin = async (ctx, next) => {
-  const query = ctx.request.body;
+  const request = ctx.request.body;
   const user = {
-    name: query.name,
-    phone: query.phone,
-    head: 'aa.com'
+    name: request.name,
+    password: request.password
   }
-  await UserServ.signin(user);
+  const res = await UserServ.signin(user);
   ctx.body = Resp({
-    data: user
+    data: res
   })
 };
 
