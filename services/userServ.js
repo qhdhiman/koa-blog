@@ -15,7 +15,7 @@ const getUsers = async () => {
  * @returns {Promise}
  */
 const findByPhone = async (phone) => {
-  let res = await UserModel.find({'phone': phone}).exec();
+  let res = await UserModel.findOne({'phone': phone}).exec();
   console.log('findUserByPhone', res)
   return res;
 };
@@ -24,8 +24,8 @@ const findByPhone = async (phone) => {
  * @param options
  * @returns {Promise}
  */
-const signin = async (phone) => {
-  let res = await UserModel.find({'phone': phone});
+const signin = async ({name, password}) => {
+  let res = await UserModel.findOne({'password': password}).$where(`this.name == "${name}" || this.phone == "${name}" `).exec();
   console.log('signin', res)
   return res;
 };
