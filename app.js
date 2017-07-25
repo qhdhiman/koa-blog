@@ -8,6 +8,9 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 const router = require('./routes');
+var cors = require('kcors');
+
+app.use(cors()); // 跨域
 
 // middlewares
 app.use(convert(bodyparser));

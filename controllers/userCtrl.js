@@ -2,7 +2,6 @@
 import UserServ from '../services/userServ';
 import Resp from '../utils/resp'
 
-// todo-app首页，渲染所有ToDo，并可以新建ToDo
 const users = async (ctx, next) => {
   const users = await User.getUsers();
   await ctx.render('user/list', {
@@ -11,18 +10,40 @@ const users = async (ctx, next) => {
     title: 'user index'
   });
 };
-
+/**
+ * 注册
+ * @param ctx
+ * @param next
+ * @returns {Promise.<void>}
+ */
 const signup = async (ctx, next) => {
   const requestData = ctx.request.body;
+  console.log('requestData', requestData)
   const user = {
     name: 'name',
     email: 'qhdhiman@qq.com',
     head: 'aa.com'
   }
-  await UserServ.add(user);
-  // ctx.redirect('/user');
-  ctx.body = '添加成功'
+  const exits = await UserServ.findByPhone(user.phone);
+  if (exits) {
+    ctx.body = Resp({
+      isOk: false,
+      data: '手机号已存在'
+    })
+  } else {
+    const res = await UserServ.signup(user);
+    ctx.body = Resp({
+      data: res
+    })
+
+  }
 };
+/**
+ * 登录
+ * @param ctx
+ * @param next
+ * @returns {Promise.<void>}
+ */
 const signin = async (ctx, next) => {
   const query = ctx.request.body;
   const user = {

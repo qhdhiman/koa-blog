@@ -31,7 +31,7 @@ const findByUserId = async (userId, {page=0, limit=20}) => {
  */
 const findAll = async ({page=0, limit=20}) => {
   try {
-    const res = await ArticleModel.find().skip(page * limit).limit(limit).exec()
+    const res = await ArticleModel.find().skip(page * limit).limit(limit).sort({'_id': -1}).exec()
     return res
   } catch (e) {
     throw e
