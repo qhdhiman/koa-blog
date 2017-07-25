@@ -52,8 +52,11 @@ const signin = async (ctx, next) => {
     password: request.password
   }
   const res = await UserServ.signin(user);
-  ctx.body = Resp({
+  ctx.body = res ? Resp({
     data: res
+  }) : Resp({
+    isOk: false,
+    data: '用户名或密码错误'
   })
 };
 
