@@ -8,7 +8,14 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 const router = require('./routes');
-var cors = require('kcors');
+const cors = require('kcors');
+import jwt from 'jsonwebtoken';
+import jwtKoa from 'koa-jwt';
+import {secret} from './utils/settings'
+
+app.use(jwtKoa({secret}).unless({
+  path: [/^\/user\/sign*/, /^\/article\/*/] //数组中的路径不需要通过jwt验证
+}))
 
 app.use(cors()); // 跨域
 
