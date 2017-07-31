@@ -11,11 +11,20 @@ const getUsers = async () => {
   return res;
 };
 /**
- * 获取全部用户信息
+ * 获取用户信息
  * @returns {Promise}
  */
 const findByPhone = async (phone) => {
   let res = await UserModel.findOne({'phone': phone}).exec();
+  console.log('findUserByPhone', res)
+  return res;
+};
+/**
+ * 获取用户信息
+ * @returns {Promise}
+ */
+const findById = async (id) => {
+  let res = await UserModel.findOne({'_id': id}).exec();
   console.log('findUserByPhone', res)
   return res;
 };
@@ -44,5 +53,6 @@ export default {
   signup,
   signin,
   findByPhone,
+  findById,
   getUsers
 }

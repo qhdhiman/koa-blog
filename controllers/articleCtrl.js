@@ -1,6 +1,7 @@
 // app/controllers/user.js
 import ArticleServ from '../services/articleServ';
 import resp from '../utils/resp';
+import jwtUtil from '../utils/jwtUtil';
 
 /**
  * 分页公用方法
@@ -62,7 +63,8 @@ const findByUserId = async (ctx, next) => {
 
 // 通过表单的post新建一个ToDo，并返回列表页
 const add = async (ctx, next) => {
-  const userId = '595b35fc85a90be24e255877';
+  const payload = jwtUtil.verifyByHeader(ctx)  // // 解密，获取payload
+  const userId = payload._id;
   const query = ctx.request.body;
   const article = {
     user_id: userId,

@@ -13,10 +13,6 @@ const cors = require('kcors');
 import jwtKoa from 'koa-jwt';
 import {secret} from './utils/settings'
 
-app.use(jwtKoa({secret}).unless({
-  path: [/^\/user\/*/, /^\/article\/*/] //数组中的路径不需要通过jwt验证
-}))
-
 app.use(cors()); // 跨域
 
 // middlewares
@@ -41,6 +37,10 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start;
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
+// jwt
+app.use(jwtKoa({secret}).unless({
+  path: [/^\/user\/*/, /^\/article\/all/] //数组中的路径不需要通过jwt验证
+}))
 
 app.use(router.routes(), router.allowedMethods());
 // response

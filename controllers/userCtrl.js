@@ -1,6 +1,5 @@
 // app/controllers/user.js
-import jwt from 'jsonwebtoken';
-import {secret} from '../utils/settings'
+import jwtUtil from '../utils/jwtUtil';
 
 import UserServ from '../services/userServ';
 import Resp from '../utils/resp'
@@ -56,12 +55,7 @@ const signin = async (ctx, next) => {
   }
   const res = await UserServ.signin(user);
   if (res) {
-    const token = jwt.sign({
-      name: res.name,
-      head: res.head,
-      phone: res.phone,
-      _id: res._id
-    }, secret, {expiresIn: '30d'});  //token签名 有效期为30天
+    const token = jwtUtil.sign({_id: res._id });  //token签名 有效期为30天
     res.token = token;
     ctx.body = Resp({
       data: {
@@ -85,10 +79,18 @@ const getLoginUser = async (ctx, next) => {
   // const token = ctx.header.authorization;
   const token = ctx.request.body.token;
   if (token) {
-    const user = jwt.verify(token, secret)  // // 解密，获取payload
-    ctx.body = Resp({
-      data: user
-    })
+    const payload = jwtUtil.verify(token) // 解密，获取payload
+    if (payload) {
+      const user = await UserServ.findById(payload._id)
+      ctx.body = Resp({
+        data: user
+      })
+    } else {
+      ctx.body = Resp({
+        isOk: false,
+        data: '解析token失败'
+      })
+    }
   } else {
     ctx.body = Resp({
       isOk: false,
