@@ -64,7 +64,9 @@ const signin = async (ctx, next) => {
     }, secret, {expiresIn: '30d'});  //token签名 有效期为30天
     res.token = token;
     ctx.body = Resp({
-      data: token
+      data: {
+        token: token
+      }
     })
   } else {
     ctx.body = Resp({
@@ -80,16 +82,23 @@ const signin = async (ctx, next) => {
  * @returns {Promise.<void>}
  */
 const getLoginUser = async (ctx, next) => {
-  const token = ctx.header.authorization;
+  // const token = ctx.header.authorization;
+  const token = ctx.request.body.token;
   if (token) {
-    const user = await verify(token.split(' ')[1], secret)  // // 解密，获取payload
-    ctx.body = {
-      payload
-    }
+    const user = jwt.verify(token, secret)  // // 解密，获取payload
+    ctx.body = Resp({
+      data: user
+    })
+  } else {
+    ctx.body = Resp({
+      isOk: false,
+      data: 'token无效'
+    })
   }
 }
 
 export default {
   signup,
-  signin
+  signin,
+  getLoginUser
 }

@@ -1,9 +1,11 @@
+import UserCtrl from "../controllers/userCtrl";
+
 var router = require('koa-router')({
   prefix: '/user'
 });
 
-const UserCtrl  = require('../controllers/userCtrl');
 router.post('/signup', UserCtrl.signup);
 router.post('/signin', UserCtrl.signin);
+router.post('/getLoginUser', UserCtrl.getLoginUser);
 
 module.exports = router;
