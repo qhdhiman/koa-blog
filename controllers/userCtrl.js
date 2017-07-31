@@ -20,12 +20,12 @@ const users = async (ctx, next) => {
  */
 const signup = async (ctx, next) => {
   const request = ctx.request.body;
-  console.log('requestData', request)
-  const exits = await UserServ.findByPhone(request.phone);
+  const exits = await UserServ.exits(request.name, request.phone);
   if (exits) {
+    const msg = exits.name == request.name ? '用户名已存在' : '手机号已存在';
     ctx.body = Resp({
       isOk: false,
-      data: '手机号已存在'
+      data: msg
     })
   } else {
     const user = {
@@ -34,9 +34,16 @@ const signup = async (ctx, next) => {
       password: request.password,
       head: '/static/avatar.jpg'
     }
-    const res = await UserServ.signup(user);
+    let res = await UserServ.signup(user);
+    const token = jwtUtil.sign({_id: res._id });  //token签名 有效期为30天
     ctx.body = Resp({
-      data: res
+      data: {
+        _id: res._id,
+        name: res.name,
+        phone: res.phone,
+        head: res.head,
+        token
+      }
     })
 
   }

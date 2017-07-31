@@ -20,6 +20,15 @@ const findByPhone = async (phone) => {
   return res;
 };
 /**
+ * 是否存在
+ * @returns {Promise}
+ */
+const exits = async (name, phone) => {
+  let res = await UserModel.find().$where(`this.name == "${name}" || this.phone == "${name}" || this.name == "${phone}" || this.phone == "${phone}" `).exec();
+  console.log('exits', res)
+  return res[0];
+};
+/**
  * 获取用户信息
  * @returns {Promise}
  */
@@ -54,5 +63,6 @@ export default {
   signin,
   findByPhone,
   findById,
-  getUsers
+  getUsers,
+  exits
 }
