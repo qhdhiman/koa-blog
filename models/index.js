@@ -17,8 +17,10 @@ promise.then(function(db) {
 import UserModel from './userModel';
 import ArticleModel from './articleModel';
 import TagModel from './tagModel';
+import CommentModel from './commentModel';
 export default {
   UserModel,
   ArticleModel,
-  TagModel
+  TagModel,
+  CommentModel
 };

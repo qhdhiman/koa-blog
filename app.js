@@ -39,7 +39,7 @@ app.use(async (ctx, next) => {
 });
 // jwt
 app.use(jwtKoa({secret}).unless({
-  path: [/^\/user\/*/, /^\/article\/all/] //数组中的路径不需要通过jwt验证
+  path: [/^\/user\/*/, /^\/article\/all/, /^\/article\/list/] //数组中的路径不需要通过jwt验证
 }))
 
 app.use(router.routes(), router.allowedMethods());

@@ -1,5 +1,6 @@
 // app/controllers/user.js
 import ArticleServ from '../services/articleServ';
+import CommentServ from '../services/commentServ';
 import resp from '../utils/resp';
 import jwtUtil from '../utils/jwtUtil';
 
@@ -37,7 +38,7 @@ const findById = async (ctx, next) => {
  */
 const findAll = async (ctx, next) => {
   const query = pageQuerys(ctx);
-  const res = await ArticleServ.findAll(query);
+  let res = await ArticleServ.findAll(query);
   ctx.body = resp({
     data: res
   });
@@ -45,7 +46,7 @@ const findAll = async (ctx, next) => {
 };
 
 /**
- * 获取全部文章 by {user_id}
+ * 获取全部文章 by {owner}
  * @param ctx
  * @param next
  * @returns {Promise.<void>}
@@ -67,7 +68,7 @@ const add = async (ctx, next) => {
   const userId = payload._id;
   const query = ctx.request.body;
   const article = {
-    user_id: userId,
+    owner: userId,
     title: query.title,
     content: query.content,
     tags: query.tags && query.tags.split(',')
@@ -77,10 +78,53 @@ const add = async (ctx, next) => {
     data: res
   })
 };
+/**
+ * 评论
+ * @param ctx
+ * @param next
+ */
+const comment = async (ctx, next) => {
+  const payload = jwtUtil.verifyByHeader(ctx)  // // 解密，获取payload
+  const userId = payload._id;
+  const query = ctx.request.body;
+  const _comment = {
+    user: userId,
+    article: query.articleId,
+    comment: query.comment
+  }
+  let res = await CommentServ.add(_comment);
+  await ArticleServ.addComment(res.article, res._id);
+  ctx.body = resp({
+    data: res
+  })
+};
+/**
+ * 点赞
+ * @param ctx
+ * @param next
+ */
+const like = async (ctx, next) => {
+  ctx.body = resp({
+    data: ''
+  })
+};
+/**
+ * 收藏
+ * @param ctx
+ * @param next
+ */
+const favorite = async (ctx, next) => {
+  ctx.body = resp({
+    data: ''
+  })
+};
 
 export default {
   findById,
   findByUserId,
   findAll,
-  add
+  add,
+  comment,
+  like,
+  favorite
 }

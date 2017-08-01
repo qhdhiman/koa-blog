@@ -19,7 +19,7 @@ const findById = async (_id) => {
  */
 const findByUserId = async (userId, {page=0, limit=20}) => {
   try {
-    const res = await ArticleModel.find({user_id: userId}).populate('user_id', 'name head phone').skip(page * limit).limit(limit).exec()
+    const res = await ArticleModel.find({owner: userId}).populate('owner', 'name head phone').skip(page * limit).limit(limit).exec()
     return res
   } catch (e) {
     throw e
@@ -31,7 +31,7 @@ const findByUserId = async (userId, {page=0, limit=20}) => {
  */
 const findAll = async ({page=0, limit=20}) => {
   try {
-    const res = await ArticleModel.find().populate('user_id', 'name head phone').skip(page * limit).limit(limit).sort({'_id': -1}).exec()
+    const res = await ArticleModel.find().populate('owner', 'name head phone').populate({ path: 'comments', populate: { path: 'user' }}).skip(page * limit).limit(limit).sort({'_id': -1}).exec()
     return res
   } catch (e) {
     throw e
@@ -50,10 +50,21 @@ const add = async (options) => {
     throw e;
   }
 };
+/**
+ * 更新评论
+ * @param options
+ * @returns {Promise.<*>}
+ */
+const addComment = async (_id, commentId) => {
+  console.log(_id, commentId)
+  const res = await ArticleModel.findByIdAndUpdate(_id, { $push: {comments: commentId}});
+  return res;
+};
 
 export default {
   findById,
   findByUserId,
   findAll,
-  add
+  add,
+  addComment
 }
