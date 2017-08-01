@@ -9,7 +9,5 @@ const ArticleSchema = new Schema({
   comments: [{type: Schema.Types.ObjectId, required: true, ref: 'Comment'}],
   create_time: { type: Date, required: true, default: Date.now }
 });
-
-
 ArticleSchema.index({ _id: 1 });
 export default mongoose.model('Article', ArticleSchema);
