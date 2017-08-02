@@ -19,7 +19,7 @@ const findById = async (_id) => {
  */
 const findByUserId = async (userId, {page=0, limit=20}) => {
   try {
-    const res = await ArticleModel.find({owner: userId}).populate('owner', 'name head phone').skip(page * limit).limit(limit).exec()
+    const res = await ArticleModel.find({owner: userId}).populate('owner', 'name head phone').populate({ path: 'comments', populate: { path: 'user' }}).skip(page * limit).limit(limit).exec()
     return res
   } catch (e) {
     throw e
