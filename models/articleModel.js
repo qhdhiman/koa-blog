@@ -7,6 +7,7 @@ const ArticleSchema = new Schema({
   content: { type: String, required: true },
   tags: { type: [String] },
   comments: [{type: Schema.Types.ObjectId, required: true, ref: 'Comment'}],
+  likes: [{type: Schema.Types.ObjectId, required: true, ref: 'Like'}],
   create_time: { type: Date, required: true, default: Date.now }
 });
 ArticleSchema.index({ _id: 1 });

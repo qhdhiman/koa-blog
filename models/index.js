@@ -18,9 +18,11 @@ import UserModel from './userModel';
 import ArticleModel from './articleModel';
 import TagModel from './tagModel';
 import CommentModel from './commentModel';
+import LikeModel from './likeModel';
 export default {
   UserModel,
   ArticleModel,
   TagModel,
-  CommentModel
+  CommentModel,
+  LikeModel
 };

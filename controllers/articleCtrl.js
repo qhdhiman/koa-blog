@@ -1,6 +1,7 @@
 // app/controllers/user.js
 import ArticleServ from '../services/articleServ';
 import CommentServ from '../services/commentServ';
+import LikeServ from '../services/likeServ';
 import resp from '../utils/resp';
 import jwtUtil from '../utils/jwtUtil';
 
@@ -62,7 +63,7 @@ const findByUserId = async (ctx, next) => {
 
 };
 
-// 通过表单的post新建一个ToDo，并返回列表页
+// 通过表单的post新建一个，并返回列表页
 const add = async (ctx, next) => {
   const payload = jwtUtil.verifyByHeader(ctx)  // // 解密，获取payload
   const userId = payload._id;
@@ -104,9 +105,38 @@ const comment = async (ctx, next) => {
  * @param next
  */
 const like = async (ctx, next) => {
+  const payload = jwtUtil.verifyByHeader(ctx)  // // 解密，获取payload
+  const userId = payload._id;
+  const query = ctx.request.body;
+  const _comment = {
+    user: userId,
+    article: query.articleId
+  }
+  let res = await LikeServ.add(_comment);
+  await ArticleServ.addLike(res.article, res._id);
   ctx.body = resp({
-    data: ''
+    data: res
   })
+};
+/**
+* 取消点赞
+* @param ctx
+* @param next
+*/
+const unlike = async (ctx, next) => {
+ const payload = jwtUtil.verifyByHeader(ctx)  // // 解密，获取payload
+ const userId = payload._id;
+ const query = ctx.request.body;
+ const _comment = {
+   user: userId,
+   article: query.articleId
+ }
+ let res = await LikeServ.remove(_comment);
+ console.log('unlike', res)
+ await ArticleServ.removeLike(res.article, res._id);
+ ctx.body = resp({
+   data: res
+ })
 };
 /**
  * 收藏
@@ -126,5 +156,6 @@ export default {
   add,
   comment,
   like,
+  unlike,
   favorite
 }
