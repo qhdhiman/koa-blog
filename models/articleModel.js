@@ -8,7 +8,8 @@ const ArticleSchema = new Schema({
   tags: { type: [String] },
   comments: [{type: Schema.Types.ObjectId, required: true, ref: 'Comment'}],
   likes: [{type: Schema.Types.ObjectId, required: true, ref: 'Like'}],
-  create_time: { type: Date, required: true, default: Date.now }
+  create_time: { type: Date, required: true, default: Date.now },
+  origin: {type: Schema.Types.ObjectId, required: false, ref: 'Article'}
 });
 ArticleSchema.index({ _id: 1 });
 export default mongoose.model('Article', ArticleSchema);

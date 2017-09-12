@@ -144,8 +144,32 @@ const unlike = async (ctx, next) => {
  * @param next
  */
 const favorite = async (ctx, next) => {
+  const payload = jwtUtil.verifyByHeader(ctx)  // // 解密，获取payload
+  const userId = payload._id;
+  const query = ctx.request.body;
+  let errmsg = '';
+  const res = await ArticleServ.findById(query.articleId);
+  if (res) {
+    console.log(res.owner != userId)
+    if (res.owner != userId) {
+      const article = {
+        owner: userId,
+        title: res.title,
+        content: res.content,
+        origin: res._id
+      }
+      let result = await ArticleServ.add(article);
+      ctx.body = resp({
+        data: result
+      })
+      return;
+    } else {
+      errmsg = '不能收藏自己的文章';
+    }
+  } else errmsg = '收藏文章可能已被删除';
   ctx.body = resp({
-    data: ''
+    isOk: false,
+    data: errmsg
   })
 };
 
