@@ -1,7 +1,7 @@
 // app/models/index.js
 import mongoose from 'mongoose';
 
-const promise = mongoose.connect('mongodb://127.0.0.1:27017/blog', {
+const promise = mongoose.connect('mongodb://blog:blog@ds123351.mlab.com:23351/node4blog', {
   useMongoClient: true,
   /* other options */
 });
