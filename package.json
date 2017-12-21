@@ -28,6 +28,7 @@
     "koa-unless": "^1.0.7",
     "koa-views": "^5.0.1",
     "mongoose": "^4.11.1",
+    "nodemon": "^1.14.1",
     "runkoa": "^1.5.2"
   },
   "devDependencies": {
